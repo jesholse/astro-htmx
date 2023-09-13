@@ -12,7 +12,7 @@
 This site uses Astro's view transition between pages and HTMx for comments together with Tailwind for design and layout. The site is not connected to a real API.
 The API is located in the /pages/api/ folder.
 
-I has no reponsive design.
+It has no reponsive design.
 
 HTMx only works after page change if htmx.process(document.body) is executed. If not, HTMx will not regonize DOM changes and will stop working. HTMx.process is executed as a script in the head.
 
