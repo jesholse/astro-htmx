@@ -1,0 +1,22 @@
+---
+const {id} = Astro.params
+const {title, date} = Astro.props
+const today = new Date()
+const postDate = new Date(date)
+const elapsed = Math.round((today - postDate) /(1000 * 60 * 60 * 24))
+--- 
+<div class="rounded-lg border-t-2 mx-auto px-20 my-10 container text-white py-10 " style="max-width: 1200px;" >
+    <div class="text-xl px-20 pb-4 text-black">Comments for {title}</div>
+    <div class="flex flex-col  [&>*:nth-child(odd)]:bg-neutral-100" id={`comments-${id}`}> 
+        <div class="rounded-lg mx-20 p-3 text-black bg-slate-200 ">
+          <div class="text-lg font-medium">User writes...</div>
+          <div class="mt-1">Meddelande</div>
+        </div>
+    </div>
+    <div class="writeComment flex flex-col gap-4 px-20 mt-4">
+        <input class="rounded-lg p-2 text-black" placeholder="Name" name={`name`}/>
+        <textarea class="rounded-lg p-2  text-black" placeholder="Conntent" name={`body`}></textarea>
+        <a style="width: fit-content;" class="bg-blue-500 p-2 rounded-md hover:bg-blue-700 hover:cursor-pointer" hx-post="/api/comments" hx-target={`#comments-${id}`} hx-swap="beforeend settle:1s" hx-include=`[name='name'],[name='body']`>Comment</a>
+    </div> 
+</div>
+ 

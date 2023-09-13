@@ -1,0 +1,15 @@
+---
+const pathname = new URL(Astro.request.url).pathname
+const currentPath = pathname.slice(1)
+console.log(currentPath)
+import { fade } from "astro:transitions";
+---
+<nav   class="bg-slate-800 text-white px-3 py-3">
+    <div class="container mx-auto flex justify-end" style="max-width: 1200px">
+        <ul class="list-none flex flex-row gap-4">
+            <li><a class="flex flex-row items-center gap-2  p-2 rounded-lg" href="/"><i class="gg-home-alt"></i> <span>Startsidan</span></a></li>
+            <li><a class="flex flex-row items-center gap-2  p-2 rounded-lg" href="/blogg"><i class="gg-home-alt"></i>Blogg</a></li>
+             <li><a class="flex flex-row items-center gap-2  p-2 rounded-lg" href="/posts"><i class="gg-home-alt"></i>Posts</a></li>
+        </ul>
+    </div>
+</nav>

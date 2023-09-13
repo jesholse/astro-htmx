@@ -1,0 +1,24 @@
+	---
+    import { ViewTransitions } from "astro:transitions";
+    ---
+    <head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		 <link rel="stylesheet" href="/style.css">
+		 <link href='https://unpkg.com/css.gg@2.0.0/icons/css/home-alt.css' rel='stylesheet'>
+		 <link href='https://unpkg.com/css.gg@2.0.0/icons/css/close.css' rel='stylesheet'>
+		 <link href='https://unpkg.com/css.gg@2.0.0/icons/css/comment.css' rel='stylesheet'>
+		 <link href='https://unpkg.com/css.gg@2.0.0/icons/css/calendar-dates.css' rel='stylesheet'>
+		 <link href='https://unpkg.com/css.gg@2.0.0/icons/css/user.css' rel='stylesheet'>
+		 <script src="/js/htmx.js" is:inline></script>
+		<title>Astro</title>
+				<script is:inline>
+            document.addEventListener("astro:page-load", () => {
+                htmx.process(document.body);
+            });
+		</script>
+		<ViewTransitions></ViewTransitions>
+	
+	</head>

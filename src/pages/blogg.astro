@@ -1,0 +1,25 @@
+---
+import Navigation from "../components/Navigation.astro";
+import Head from "../components/Head.astro";
+import PostList from "../components/PostList.astro";
+import Footer from "../components/Footer.astro";
+const pathname = new URL(Astro.request.url).pathname
+---
+<html lang="en">
+<Head></Head>
+<body>
+    <Navigation ></Navigation>
+    <div  class="container mx-auto flex flex-row" style="max-width: 1200px">
+        <div  class="container " style="max-width: 1200px;">
+            <div transition:name="title" class=" rounded-lg container p-4 text-4xl text-black" style="width: fit-content; ">
+                {pathname} 
+                <span class="text-xl"></span>
+            </div>
+        </div>
+    </div>
+    <div transition:name="test" transition:animate="fade" >
+        <PostList  ></PostList>
+    </div>   
+    <Footer></Footer>
+</body>
+</html>

@@ -1,0 +1,13 @@
+---
+   const formData = await Astro.request.formData();
+   const name = formData.get("name").toString();
+   const body = formData.get("body").toString();
+   console.log(name, body)
+---
+     <div class="rounded-lg mx-20 p-3 text-black bg-neutral-50">
+          <div class="text-lg font-medium">{name} writes...</div>
+          <div class="mt-1">{body}</div>
+        </div>
+
+
+
