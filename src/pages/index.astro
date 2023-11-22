@@ -1,7 +1,4 @@
 ---
- const data = await fetch("http://localhost:4321/api/posts.json")
- const posts = await data.json()
- import { fade } from "astro:transitions"
 import Head from "../components/Head.astro"
 import Navigation from "../components/Navigation.astro"
 const pathname = new URL(Astro.request.url).pathname

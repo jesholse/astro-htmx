@@ -1,0 +1,43 @@
+---
+import Comments from "../../components/Comments.astro";
+const {id} = Astro.params;
+console.log(id)
+const post = await fetch(`/api/posts/${id}.json`);
+const postJson = await post.json()
+const imageRes = await fetch(`https://dumpen.se/wp-json/wp/v2/media/${postJson[0].post.featured_media}`)
+const image = await imageRes.json()
+const commentsRes = await fetch(`https://dumpen.se/wp-json/wp/v2/comments?post=${postJson[0].post.id}`)
+const comments = await commentsRes.json()
+const today = new Date()
+import Layout from "../../layout/Layout.astro";
+
+---
+
+<Layout>
+    <div style="z-index: 222;" class="px-5 my-5 mx-auto flex flex-row items-center justify-end max-w-6xl ">
+        <div transition:name="title" class=" rounded-lg container p-2 text-xl text-black" style="width: fit-content; "></div>
+        <a style="width: fit-content;" class="rounded-lg p-1 block bg-red-500 cursor-pointer" onclick="history.back()">
+            <i class="gg-close text-red-200"></i>
+        </a>
+    </div>
+    <article transition:name={`card-${postJson[0].post.slug}`} class=" rounded-2xl flex flex-col mx-auto container bg-neutral-50 mt-12 max-w-6xl">
+        <img class="rounded-t-2xl w-96 max-w-2xl mx-auto" transition:name={`image-${postJson[0].post.slug}`} src={image.guid.rendered}/>
+        <div transition:name={`title-${postJson[0].post.slug}`} class="  text-center text-3xl text-black p-6">{postJson[0].post.title.rendered}</div>
+        <div transition:name={`footer-${postJson[0].post.slug}`}  class="p-4 md:px-40 px-6 border-b-2 footer flex flex-row justify-start gap-4">
+            <div class="flex flex-row gap-2">
+                <i class="gg-comment "></i>
+                <span>{comments.length}</span>
+            </div>
+            <div class="flex flex-row gap-2 items-center">
+                <i class="gg-calendar-dates"></i>
+                <span>{ Math.round((today - new Date(postJson[0].post.date)) /(1000 * 60 * 60 * 24))} days ago</span> 
+            </div>
+            <div class="flex flex-row gap-2 items-center">
+                <i class="gg-user"></i>
+                <span>by Jeshol</span>
+            </div>
+        </div>
+        <div transition:name={`content-${postJson[0].post.slug}`} set:html={postJson[0].post.content.rendered}  class="content bg-neutral-50 text-xl md:px-40 px-6 pb-6"></div>
+        <Comments title={postJson[0].post.title.rendered} comments={comments}></Comments>
+    </article>
+</Layout>
