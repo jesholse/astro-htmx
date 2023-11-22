@@ -1,7 +1,6 @@
 ---
 import type { GetStaticPaths } from "astro";
 import Layout from "../../layout/Layout.astro";
-import PostList from "../../components/PostList.astro";
 const today = new Date()
 export const getStaticPaths = (async({paginate}) => {
     const res = await fetch(`https://norian.studio/wp-json/wp/v2/dinos?per_page=10&_embed`)
@@ -24,7 +23,6 @@ export const getStaticPaths = (async({paginate}) => {
     return paginate(posts, {pageSize: 5});
 }) satisfies GetStaticPaths;
 const {page} = Astro.props
-console.log(page.data)
 ---
 <Layout>
     <div  class="container mx-auto flex flex-row">

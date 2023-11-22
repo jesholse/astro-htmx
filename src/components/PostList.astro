@@ -2,8 +2,6 @@
  const data = await fetch("https://norian.studio/wp-json/wp/v2/dinos")
  const posts = await data.json()
 const today = new Date()
-import PostImage from "./PostImage.astro";
-import PostComments from "./PostComments.astro";
 ---
 <div class="container mx-auto flex flex-wrap [&>*:first-child]:basis-full max-w-6xl" >
 	{
@@ -17,7 +15,6 @@ import PostComments from "./PostComments.astro";
                          <h1 transition:name={`title-${post.slug}`} class="group-hover:text-red-800 text-xl p-4 pb-0 text-black line-clamp-1">{post.title.rendered}</h1>
 
                         <div transition:name={`footer-${post.slug}`} class="p-4 footer text-slate-500 flex flex-row justify-between gap ">
-                        <PostComments id={post.id}></PostComments>
                             <div class="flex flex-row gap-2 items-center">
                                 <i class="gg-calendar-dates"></i>
                                 <span>{ Math.round((today - new Date(post.date)) /(1000 * 60 * 60 * 24))} days ago</span> 

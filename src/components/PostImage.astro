@@ -1,6 +1,0 @@
----
-const {media, slug} = Astro.props
-const res = await fetch(`https://dumpen.se/wp-json/wp/v2/media/${media}`)
-const image = await res.json()
----
-<img class=" max-h-48 mx-auto"  src={image.guid.rendered} />
