@@ -4,21 +4,22 @@ import type { GetStaticPaths } from "astro";
 const {slug} = Astro.params
 const res = await fetch(`https://norian.studio/wp-json/wp/v2/dinos?slug=${slug}&_embed`)
 const [post] = await res.json()
+
 export const getStaticPaths = (async() => {
     const res = await fetch(`https://norian.studio/wp-json/wp/v2/dinos?per_page=10`)
     const total = res.headers.get("x-wp-total")
     const numb = parseInt(total, 10)/10
-    const roundedNumb = n => Math.ceil(n/5) * 5
+    const roundedNumb = n => Math.ceil(n)
     const rounded = roundedNumb(numb)
     const posts = []
     let i = 1;
     while(i < rounded){
-        i++;
         const res = await fetch(`https://norian.studio/wp-json/wp/v2/dinos?per_page=10&page=${i}`)
         const res_posts = await res.json()
         res_posts.map((post)=>{
             posts.push(post)
         })
+        i++;
     }
     return posts.map((post)=>({
         params: {slug: post.slug, props: post.id}
@@ -35,9 +36,9 @@ const today = new Date()
         </a>
     </div>
     <article transition:name={`card-${post.slug}`} class=" rounded-2xl flex flex-col mx-auto container bg-neutral-50 mt-12 max-w-6xl">
-        <img class="rounded-t-2xl w-96 max-w-2xl mx-auto" transition:name={`image-${post.slug}`} src={post._embedded['wp:featuredmedia']['0'].source_url}/>
+        {post._embedded['wp:featuredmedia'] ? <img class="md:h-full md:max-3-xl mx-auto my-auto md:p-0 p-4" src={post._embedded['wp:featuredmedia']['0'].source_url}/> : <div>No image</div>}
         <div transition:name={`title-${post.slug}`} class="  text-center text-3xl text-black p-6">{post.title.rendered}</div>
-        <div transition:name={`footer-${post.slug}`}  class="p-4 md:px-40 px-6 border-b-2 footer flex flex-row justify-start gap-4">
+        <div transition:name={`footer-${post.slug}`}  class="p-4 md:px-40 px-6 border-b-2 footer flex flex-row flex-wrap justify-start gap-4">
             <div class="flex flex-row gap-2">
                 <i class="gg-comment "></i>
                 <span></span>
@@ -51,6 +52,7 @@ const today = new Date()
                 <span>by Jeshol</span>
             </div>
             <div>
+                <strong>Categories: </strong>
                 {
                     post._embedded['wp:term']['0'].map((category)=>(
                         <a href={`/category/${category.id}`}>{category.name}</a>

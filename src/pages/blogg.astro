@@ -4,20 +4,45 @@ import Head from "../components/Head.astro";
 import PostList from "../components/PostList.astro";
 import Footer from "../components/Footer.astro";
 const pathname = new URL(Astro.request.url).pathname
+const res = await fetch(`https://norian.studio/wp-json/wp/v2/dinos?per_page=1&_embed`)
+const post = await res.json()
+const today = new Date()
 ---
 <html lang="en">
 <Head></Head>
 <body>
     <Navigation ></Navigation>
-    <div  class="container mx-auto flex flex-row" style="max-width: 1200px">
-        <div  class="container " style="max-width: 1200px;">
-            <div transition:name="title" class=" rounded-lg container p-4 text-4xl text-black" style="width: fit-content; ">
+    <div  class="container mx-auto flex flex-row max-w-6xl">
+        <div  class="container max-w-6xl">
+            <div transition:name="title" class=" rounded-lg container p-4 text-4xl text-black w-fit">
                 {pathname} 
                 <span class="text-xl"></span>
             </div>
         </div>
     </div>
-    <div transition:name="test" transition:animate="fade" >
+    <div transition:animate="fade" >
+        <div transition:name="test" transition:animate="fade" class="max-w-6xl mx-auto" >
+        <div class="flex flex-col md:basis-2/6 p-4 w-fit">
+            <article transition:name={`card-${post[0].slug}`} class=" border-b-2 hover:shadow-slate-400 pb-4">
+                    <div class="flex md:flex-row flex-col gap-12">
+                        <div  transition:name={`image-${post[0].slug}`}>
+                            {post[0]._embedded['wp:featuredmedia'] ? <img class="w-96 pb-4" src={post[0]._embedded['wp:featuredmedia']['0'].source_url}/> : <div>No image</div>}
+                        </div>
+                        <div class="flex flex-col max-w-2xl">
+                            <h1 transition:name={`title-${post[0].slug}`} class="group-hover:text-red-800 text-2xl pb-1 text-black line-clamp-1">{post[0].title.rendered}</h1>
+                            <div class="line-clamp-5" set:html={post[0].content.rendered}> </div>
+                            <div transition:name={`footer-${post[0].slug}`} class="py-4 footer text-slate-500 flex flex-row justify-between gap ">
+                                <div class="flex flex-row gap-2 items-center">
+                                    <i class="gg-calendar-dates"></i>
+                                    <span>{ Math.round((today - new Date(post[0].date)) /(1000 * 60 * 60 * 24))} days ago</span> 
+                                </div>
+                            </div>
+                            <a class="px-4 py-2 border-2 w-fit border-slate-400 text-slate-500 font-semibold" href={`/posts/${post[0].slug}`} >Läs mer</a>
+                        </div>
+                    </div>
+            </article>
+        </div>
+        </div>
         <PostList  ></PostList>
     </div>   
     <Footer></Footer>

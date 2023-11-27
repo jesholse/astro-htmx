@@ -1,19 +1,20 @@
 ---
- const data = await fetch("https://norian.studio/wp-json/wp/v2/dinos")
+ const data = await fetch("https://norian.studio/wp-json/wp/v2/dinos?per_page=6&_embed&offset=1")
  const posts = await data.json()
-const today = new Date()
+ const today = new Date()
 ---
-<div class="container mx-auto flex flex-wrap [&>*:first-child]:basis-full max-w-6xl" >
+<div class="container mx-auto flex flex-wrap max-w-6xl" >
 	{
         posts.map((post, i)=>(
             <div class="flex flex-col md:basis-2/6 p-4 w-fit">
-                <article transition:name={`card-${post.slug}`} class=" border-b-2 hover:shadow-slate-400  ">
+                <article transition:name={`card-${post.slug}`} class=" border-b-2 hover:shadow-slate-400">
                     <a class="group" href={`/posts/${post.slug}`} >
-                        <div transition:name={`image-${post.slug}`}>
-              
+                        <div class="md:h-56 md:w-56" transition:name={`image-${post.slug}`}>
+                            {post._embedded['wp:featuredmedia'] ? <img class="h-full object-contain  my-auto" src={post._embedded['wp:featuredmedia']['0'].source_url}/> : <div>No image</div>}
                         </div>
-                         <h1 transition:name={`title-${post.slug}`} class="group-hover:text-red-800 text-xl p-4 pb-0 text-black line-clamp-1">{post.title.rendered}</h1>
-
+                         <h1 transition:name={`title-${post.slug}`} class="group-hover:text-red-800 text-2xl pb-1 text-black line-clamp-1">{post.title.rendered}</h1>
+                        <div class="line-clamp-3" set:html={post.content.rendered}> 
+                        </div>
                         <div transition:name={`footer-${post.slug}`} class="p-4 footer text-slate-500 flex flex-row justify-between gap ">
                             <div class="flex flex-row gap-2 items-center">
                                 <i class="gg-calendar-dates"></i>

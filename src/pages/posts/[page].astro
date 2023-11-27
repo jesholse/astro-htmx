@@ -12,14 +12,14 @@ export const getStaticPaths = (async({paginate}) => {
     const posts = []
     let i = 1;
     while(i < rounded){
-        i++;
         const res = await fetch(`https://norian.studio/wp-json/wp/v2/dinos?per_page=10&page=${i}&_embed`)
         const res_posts = await res.json()
         res_posts.map((post)=>{
             posts.push(post)
         })
+        i++;
+        console.log(posts.length)
     }
-    console.log(posts.length)
     return paginate(posts, {pageSize: 5});
 }) satisfies GetStaticPaths;
 const {page} = Astro.props
@@ -34,15 +34,15 @@ const {page} = Astro.props
         </div>
     </div>
     <div transition:name="test" transition:animate="fade" class="max-w-6xl mx-auto" >
-    {page.data.map((post)=>(
-            <div class="flex flex-col p-4 w-3/6 mx-auto">
+    {page?.data.map((post)=>(
+            <div class="flex flex-col p-4 max-w-3xl mx-auto">
                 <article transition:name={`card-${post.slug}`} class=" border-b-2 hover:shadow-slate-400  ">
                     <a class="group" href={`/posts/${post.slug}`} >
-                        <div transition:name={`image-${post.slug}`}>
+                       <!-- <div transition:name={`image-${post.slug}`}> 
                             <img src={post._embedded['wp:featuredmedia']['0'].source_url}/>
-                        </div>
+                        </div>--> 
                          <h1 transition:name={`title-${post.slug}`} class="group-hover:text-red-800 text-xl p-4 pb-0 text-black line-clamp-1">{post.title.rendered}</h1>
-
+                         <div class="line-clamp-2 px-4" set:html={post.content.rendered}> </div>
                         <div transition:name={`footer-${post.slug}`} class="p-4 footer text-slate-500 flex flex-row justify-between gap ">
                             <div class="flex flex-row gap-2 items-center">
                                 <i class="gg-calendar-dates"></i>
@@ -56,8 +56,8 @@ const {page} = Astro.props
     </div>
     <div class="p-2 flex flex-row justify-center w-full">
         <div class="flex flex-row gap-2">
-            {page.url.prev ? <a class="block bg-slate-400 text-white p-2 rounded-lg" href={page.url.prev}>Previous</a> : null}
-            {page.url.next ? <a class="block bg-slate-400 text-white p-2 rounded-lg" href={page.url.next}>Next</a> : null} 
+            {page?.url.prev ? <a class="block bg-slate-400 text-white p-2 rounded-lg" href={page.url.prev}>Previous</a> : null}
+            {page?.url.next ? <a class="block bg-slate-400 text-white p-2 rounded-lg" href={page.url.next}>Next</a> : null} 
         </div>
      </div>
 </Layout>
