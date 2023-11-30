@@ -25,15 +25,15 @@ export const getStaticPaths = (async({paginate}) => {
 const {page} = Astro.props
 ---
 <Layout>
-    <div  class="container mx-auto flex flex-row">
-        <div  class="container " style="max-width: 1200px;">
-            <div transition:name="title" class=" rounded-lg container p-4 text-4xl text-black" style="width: fit-content; ">
-               
+    <div  class=" mx-auto flex flex-row max-w-3xl px-4">
+        <div  class="container max-w-3xl">
+            <div transition:name="title" class=" rounded-lg container p-4 text-4xl text-black w-fit">
+                Archive
                 <span class="text-xl"></span>
             </div>
         </div>
     </div>
-    <div transition:name="test" transition:animate="fade" class="max-w-6xl mx-auto" >
+    <div transition:name="test" class="max-w-6xl mx-auto" >
     {page?.data.map((post)=>(
             <div class="flex flex-col p-4 max-w-3xl mx-auto">
                 <article transition:name={`card-${post.slug}`} class=" border-b-2 hover:shadow-slate-400  ">

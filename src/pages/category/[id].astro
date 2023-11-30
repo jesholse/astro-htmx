@@ -1,0 +1,48 @@
+---
+import Layout from "../../layout/Layout.astro"
+import type { GetStaticPaths } from "astro";
+export const getStaticPaths = (async () => {
+    const res = await fetch(`https://norian.studio/wp-json/wp/v2/categories/`)
+    const categories = await res.json()
+    return categories.map((category)=>{
+        return {params: {id: category.id}, props: {category}}
+    })
+}) satisfies GetStaticPaths;
+const {category} = Astro.props
+const res = await fetch(`https://norian.studio/wp-json/wp/v2/dinos?categories=${category.id}`)
+const articles = await res.json()
+console.log(category)
+const today = new Date()
+---
+
+<Layout>
+    <div  class=" mx-auto flex flex-row max-w-3xl px-4">
+        <div  class="container max-w-3xl">
+            <div transition:name="title" class=" rounded-lg container p-4 text-4xl text-black w-fit">
+                Category:
+                <span class="text-2xl">{category?.name} </span>
+            </div>
+        </div>
+    </div>
+    <div transition:name="test" transition:animate="slide" class="max-w-3xl mx-auto" >
+        {articles.map((article)=>(
+                <div class="flex flex-col p-4 max-w-3xl mx-auto">
+                    <article transition:name={`card-${article.slug}`} class=" border-b-2 hover:shadow-slate-400  ">
+                        <a class="group" href={`/posts/${article.slug}`} >
+                           <!-- <div transition:name={`image-${article.slug}`}> 
+                                <img src={article._embedded['wp:featuredmedia']['0'].source_url}/>
+                            </div>--> 
+                             <h1 transition:name={`title-${article.slug}`} class="group-hover:text-red-800 text-xl p-4 pb-0 text-black line-clamp-1">{article.title.rendered}</h1>
+                             <div class="line-clamp-2 px-4" set:html={article.content.rendered}> </div>
+                            <div transition:name={`footer-${article.slug}`} class="p-4 footer text-slate-500 flex flex-row justify-between gap ">
+                                <div class="flex flex-row gap-2 items-center">
+                                    <i class="gg-calendar-dates"></i>
+                                    <span>{ Math.round((today - new Date(article.date)) /(1000 * 60 * 60 * 24))} days ago</span> 
+                                </div>
+                            </div>
+                        </a>
+                    </article>
+                </div>
+        ))}
+        </div>
+</Layout>
